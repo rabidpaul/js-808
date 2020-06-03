@@ -52,10 +52,12 @@ I'm Paul Sanders, a JavaScript developer. And these are my notes about Splices c
 
 ## Custom Components
 
+- Tracks Editor
 - Instrument Track
 - Beat Toggle
 - BMP Slider/Input
 - Preset Select
+- Play Head
 
 ## Services
 
