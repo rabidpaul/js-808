@@ -4,5 +4,13 @@
   to have that reset-like styles together in one place.
 */
 @use '~normalize-scss/sass/normalize';
+@use '../1-settings/colors.settings' as colors;
+@use '../1-settings/text.settings' as text;
 
 @include normalize.normalize();
+
+body {
+  background-color: colors.$body-bg;
+  color: colors.$font-light;
+  font-size: text.$font-size-normal;
+}

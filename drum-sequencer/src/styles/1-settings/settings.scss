@@ -2,3 +2,4 @@
 The Settings layer generates no CSS, so it's safe to @use anywhere, including component styles and vendor style customization files.
 */
 @forward './colors.settings';
+@forward './text.settings';

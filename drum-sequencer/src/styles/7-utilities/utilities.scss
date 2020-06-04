@@ -2,5 +2,6 @@
   In a OOCSS/BEM system, over-use of utiltiies is discouraged, but certain types of utilities (like spacing) I still find it useful to
   compose with. I actually have experimented with the utility-first approach as well for reducing CSS in total.
 */
+@forward './flex.utilities';
 @forward './spacing.utilities';
 @forward './text.utilities';

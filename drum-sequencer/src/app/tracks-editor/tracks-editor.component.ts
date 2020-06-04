@@ -19,6 +19,7 @@ export class TracksEditorComponent implements OnInit {
   fg: FormGroup;
   bpm: number;
   sequences: BeatSequence[] = DRUM_SEQUENCES;
+  beats = new Array(16).map((v, i) => i);
 
   constructor(private fb: FormBuilder) {}
 

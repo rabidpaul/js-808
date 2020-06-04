@@ -1,0 +1,37 @@
+@use '../1-settings/colors.settings' as colors;
+
+.form-group--inline {
+  align-items: center;
+  display: inline-flex;
+
+  .form-group__label {
+    margin-right: 5px;
+  }
+}
+
+.form-group__label {
+  font-size: 14px;
+}
+
+.form-control,
+.form-select {
+  background-size: 8px 10px;
+  background-color: transparent;
+  border-radius: 0.25rem;
+  border: 2px solid colors.$font-light;
+  color: colors.$font-light;
+  display: inline-block;
+  font-weight: bold;
+  line-height: 1.5;
+  padding: 2px 5px;
+  vertical-align: middle;
+  width: 100%;
+}
+
+input[type='range'].form-control {
+  padding: 0;
+}
+
+.form-select {
+  appearance: none;
+}

@@ -3,6 +3,7 @@ Named color variables should be the only place hexadecimals appear in Sass code,
 stylesheet and in app component styles.
 To use, import the colors partial (or the entire Settings layer).
 */
+$nero: #282828;
 $seal-brown: #131313;
 $splice-blue: #03f;
 $white-smoke: #f6f6f6;
@@ -11,11 +12,12 @@ $white: #fff;
 // TODO: If these sections grow large enough, separate into separate settings partials for different color-mapping categories.
 
 // Backgrounds
-$body-bg: transparent;
+$body-bg: $nero;
 $header-bg: $seal-brown;
 
 // Text
 $font: $seal-brown;
+$font-light: $white;
 
 // Brand
 $primary: $splice-blue !default;

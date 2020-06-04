@@ -69,11 +69,19 @@ I'm Paul Sanders, a JavaScript developer. And these are my notes about Splices c
 
 - How much time did you spend on the exercise, what parts took longer?
 
-> I initially spent a bit of time showcasing how I setup global CSS in project. But then left it be to focus on the functional parts of the drum machine, which I assumed would take longer.
+  > I initially spent a bit of time showcasing how I setup global CSS in project. But then left it be to focus on the functional parts of the drum machine, which I assumed would take longer.
 
 - What were the hard parts, what parts did you enjoy most?
+
+  > I ended up having to nest the actual Angular project under another folder. The CLI didn't like having a kebab-case name with words staring in a digit.
+
+  > I always love a blank slate when it comes to setting up a project, but the simple nature of a one-page project meant I could set aside routing and just work on controls and interactive elements, which is always more fun.
+
+  > Figuring out how to make Tone.js work was surprisingly easy with a few inspiration examples. I don't think I'm done with that library or the Web Audio API, for sure.
+
 - Data modeling - How did you model the concepts of songs and
   tracks/patterns, can you explain why?
+  > Modeling my entities (interfaces, instruments, beat sequences) left me unsure if I had enough of a grasp on the audio engineering domain concepts to make good patterns here.
 - Simplicity vs Flexibility - How flexible is your solution? Can a user
   define patterns of different lengths? Can they play at the same time?
   Can the patterns be changed in real time? Can the velocity be set?

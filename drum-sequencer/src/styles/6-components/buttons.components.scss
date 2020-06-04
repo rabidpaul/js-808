@@ -1,9 +1,16 @@
 @use '../1-settings/colors.settings' as colors;
 
 .icon-button {
-  background-color: colors.$white;
+  background-color: transparent;
   border: none;
+  color: colors.$white;
   font-size: 2rem;
-  height: 50px;
-  width: 50px;
+  height: 2rem;
+  padding: 0;
+  width: 2rem;
+
+  &:hover {
+    cursor: pointer;
+    opacity: 0.7;
+  }
 }

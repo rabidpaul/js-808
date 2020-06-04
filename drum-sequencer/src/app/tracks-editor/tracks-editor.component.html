@@ -1,46 +1,71 @@
 <!-- Controls -->
-<div [formGroup]="fg" class="playback-controls">
-  <!-- Stop -->
+<form [formGroup]="fg" class="playback-controls mb-10">
+  <!-- Play/Pause -->
   <button
-    class="icon-button"
     (click)="togglePlayback()"
     aria-label="Play/Pause"
+    class="icon-button mr-10"
   >
     <span *ngIf="isPlaying; else playIcon" class="icon-pause"></span>
     <ng-template #playIcon>
       <span class="icon-play"></span>
     </ng-template>
   </button>
-  <!-- Play -->
+  <!-- Stop -->
   <button
-    class="icon-button"
     (click)="togglePlayback(false)"
-    aria-label="Stop"
     [disabled]="!isPlaying"
+    aria-label="Stop"
+    class="icon-button mr-20"
   >
     <span class="icon-stop"></span>
   </button>
   <!-- BPM -->
-  <div class="form-control">
-    <label for="volume">BPM</label>
+  <div class="form-group form-group--inline mr-20">
+    <label
+      for="bpm-control"
+      class="form-group__label flex-1-0-auto fixed-label"
+    >
+      {{ fg.value.bpm }} BPM:
+    </label>
+    <!-- TODO: Style a custom range slider for cross-browser design consistency -->
     <input
-      type="range"
-      id="volume"
-      name="volume"
-      min="0"
-      max="300"
+      class="form-control"
       formControlName="bpm"
+      id="bpm-control"
+      max="300"
+      min="0"
+      name="bpm-control"
+      type="range"
     />
   </div>
-  <select
-    class="form-control"
-    formControlName="sequence"
-    [compareWith]="compareSequenceByName"
-  >
-    <option [ngValue]="option" *ngFor="let option of sequences">
-      {{ option.name }}
-    </option>
-  </select>
-</div>
+  <!-- Sequence -->
+  <div class="form-group form-group--inline">
+    <label for="sequence-select" class="form-group__label">Preset:</label>
+    <select
+      [compareWith]="compareSequenceByName"
+      class="form-select"
+      formControlName="sequence"
+      id="sequence-select"
+    >
+      <option [ngValue]="option" *ngFor="let option of sequences">
+        {{ option.name }}
+      </option>
+    </select>
+  </div>
+</form>
 <!-- Step Header -->
+
 <!-- Instrument Tracks -->
+<table>
+  <thead>
+    <tr>
+      <th *ngFor="let num of beats" scope="col">{{ num }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row"></th>
+    </tr>
+  </tbody>
+</table>
