@@ -1,4 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { DRUM_SEQUENCES } from './drum-sequences.constant';
+
+interface BeatSequence {
+  name: string; // We'll use name as a unique identifier, but if there were a lot, an id would be better.
+  instruments: {
+    [instrumentName: string]: boolean[];
+  };
+}
 
 @Component({
   selector: 'ds-tracks-editor',
@@ -7,10 +16,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TracksEditorComponent implements OnInit {
   isPlaying = false;
+  fg: FormGroup;
+  bpm: number;
+  sequences: BeatSequence[] = DRUM_SEQUENCES;
 
-  constructor() {}
+  constructor(private fb: FormBuilder) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.fg = this.initForm();
+  }
+
+  initForm(): FormGroup {
+    return this.fb.group({
+      bpm: this.fb.control('120', Validators.required),
+      sequence: this.fb.control(this.sequences[0], Validators.required),
+    });
+  }
+
+  compareSequenceByName(one: BeatSequence, two: BeatSequence): boolean {
+    return one.name === two.name;
+  }
 
   togglePlayback(start?: boolean): void {
     if (start !== undefined) {

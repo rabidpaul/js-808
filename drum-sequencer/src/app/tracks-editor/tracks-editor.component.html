@@ -1,21 +1,46 @@
 <!-- Controls -->
-<div></div>
-<!-- Stop -->
-<button class="icon-button" (click)="togglePlayback()" aria-label="Play/Pause">
-  <span *ngIf="isPlaying; else playIcon" class="icon-pause"></span>
-  <ng-template #playIcon>
-    <span class="icon-play"></span>
-  </ng-template>
-</button>
-<!-- Play -->
-<button
-  class="icon-button"
-  (click)="togglePlayback(false)"
-  aria-label="Stop"
-  [disabled]="!isPlaying"
->
-  <span class="icon-stop"></span>
-</button>
-<!-- BPM -->
+<div [formGroup]="fg" class="playback-controls">
+  <!-- Stop -->
+  <button
+    class="icon-button"
+    (click)="togglePlayback()"
+    aria-label="Play/Pause"
+  >
+    <span *ngIf="isPlaying; else playIcon" class="icon-pause"></span>
+    <ng-template #playIcon>
+      <span class="icon-play"></span>
+    </ng-template>
+  </button>
+  <!-- Play -->
+  <button
+    class="icon-button"
+    (click)="togglePlayback(false)"
+    aria-label="Stop"
+    [disabled]="!isPlaying"
+  >
+    <span class="icon-stop"></span>
+  </button>
+  <!-- BPM -->
+  <div class="form-control">
+    <label for="volume">BPM</label>
+    <input
+      type="range"
+      id="volume"
+      name="volume"
+      min="0"
+      max="300"
+      formControlName="bpm"
+    />
+  </div>
+  <select
+    class="form-control"
+    formControlName="sequence"
+    [compareWith]="compareSequenceByName"
+  >
+    <option [ngValue]="option" *ngFor="let option of sequences">
+      {{ option.name }}
+    </option>
+  </select>
+</div>
 <!-- Step Header -->
 <!-- Instrument Tracks -->
