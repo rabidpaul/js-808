@@ -1,0 +1,21 @@
+@use '../1-settings/colors.settings' as colors; // Safe to import since this layer generates no actual CSS, and @use prevents duplication.
+
+// I typically alphabetize my property declarations: (See: https://google.github.io/styleguide/htmlcssguide.html#Declaration_Order)
+.global-header {
+  align-items: center;
+  background-color: colors.$seal-brown;
+  display: flex;
+  padding: 0.625rem 1.25rem; // TODO: Time allowing, I might create a mixin or function to generate rem-based spacing
+}
+
+// I used to concatenate any BEM namespaces, but I've come to recognize it as a Sass code smell not to have them searchable:
+// (See: https://csswizardry.com/2017/02/code-smells-in-css-revisited/#string-concatenation-for-classes)
+.global-header__logo {
+  width: 100px;
+  height: 30px;
+}
+
+.global-header__title {
+  color: colors.$white;
+  margin: 0;
+}

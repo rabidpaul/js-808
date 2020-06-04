@@ -4,6 +4,11 @@
   (See: https://www.creativebloq.com/web-design/manage-large-css-projects-itcss-101517528)
 */
 
+/*
+  I'm admittedly still adapting to Sass's new module system, so I may adapt the way I import partials/layers in the future. For now, I'm
+  assuming that any partials that need settings or tools will import them as namespaces from those layers.
+*/
+
 //** Settings
 @use './styles/1-settings/settings';
 //** Tools

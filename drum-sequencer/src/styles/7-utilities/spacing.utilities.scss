@@ -1,0 +1,31 @@
+// Mixins which are specific to this layer may be co-located in the file where they're used.
+@mixin create-space-utilities() {
+  $types: m, p;
+  $space: 0;
+  @while $space < 35 {
+    @each $type in $types {
+      .#{$type}-#{$space} {
+        margin: #{$space}px;
+      }
+      .#{$type}t-#{$space},
+      .#{$type}y-#{$space} {
+        margin-top: #{$space}px;
+      }
+      .#{$type}r-#{$space},
+      .#{$type}x-#{$space} {
+        margin-right: #{$space}px;
+      }
+      .#{$type}b-#{$space},
+      .#{$type}y-#{$space} {
+        margin-bottom: #{$space}px;
+      }
+      .#{$type}l-#{$space},
+      .#{$type}x-#{$space} {
+        margin-left: #{$space}px;
+      }
+    }
+    $space: $space + 5;
+  }
+}
+
+@include create-space-utilities();
