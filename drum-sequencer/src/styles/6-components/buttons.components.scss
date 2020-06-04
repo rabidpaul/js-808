@@ -1,0 +1,9 @@
+@use '../1-settings/colors.settings' as colors;
+
+.icon-button {
+  background-color: colors.$white;
+  border: none;
+  font-size: 2rem;
+  height: 50px;
+  width: 50px;
+}

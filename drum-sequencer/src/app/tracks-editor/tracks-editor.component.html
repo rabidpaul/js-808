@@ -1,1 +1,21 @@
-<p>tracks-editor works!</p>
+<!-- Controls -->
+<div></div>
+<!-- Stop -->
+<button class="icon-button" (click)="togglePlayback()" aria-label="Play/Pause">
+  <span *ngIf="isPlaying; else playIcon" class="icon-pause"></span>
+  <ng-template #playIcon>
+    <span class="icon-play"></span>
+  </ng-template>
+</button>
+<!-- Play -->
+<button
+  class="icon-button"
+  (click)="togglePlayback(false)"
+  aria-label="Stop"
+  [disabled]="!isPlaying"
+>
+  <span class="icon-stop"></span>
+</button>
+<!-- BPM -->
+<!-- Step Header -->
+<!-- Instrument Tracks -->

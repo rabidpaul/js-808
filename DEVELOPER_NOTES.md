@@ -69,7 +69,7 @@ I'm Paul Sanders, a JavaScript developer. And these are my notes about Splices c
 
 - How much time did you spend on the exercise, what parts took longer?
 
-> I think
+> I initially spent a bit of time showcasing how I setup global CSS in project. But then left it be to focus on the functional parts of the drum machine, which I assumed would take longer.
 
 - What were the hard parts, what parts did you enjoy most?
 - Data modeling - How did you model the concepts of songs and

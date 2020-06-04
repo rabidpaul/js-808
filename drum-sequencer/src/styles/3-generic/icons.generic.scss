@@ -1,3 +1,4 @@
+// Decided to go with an icon font because it's quick, and I wanted to avoid pulling in Material just for icons, though the module is nice.
 @font-face {
   font-family: 'icomoon';
   src: url('assets/icons/icomoon.eot');
@@ -32,7 +33,7 @@
 .icon-minus:before {
   content: '\ea0b';
 }
-.icon-play2:before {
+.icon-play:before {
   content: '\ea15';
 }
 .icon-pause:before {
