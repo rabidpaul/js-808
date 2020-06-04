@@ -1,0 +1,17 @@
+/*
+Named color variables should be the only place hexadecimals appear in Sass code, mapped to semantically named variables elsewhere in the
+stylesheet and in app component styles.
+To use, import the colors partial (or the entire Settings layer).
+*/
+$splice-blue: #03f;
+$white: #fff;
+$seal-brown: #131313;
+
+// Backgrounds
+$body-bg: transparent;
+
+// Text
+$font: $seal-brown;
+
+// Buttons
+$primary: $splice-blue !default;

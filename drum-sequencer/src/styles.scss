@@ -1,1 +1,24 @@
-/* You can add global styles to this file, and also import other style files */
+/*
+  GLOBAL STYLES METHODOLOGY: Here we follow the ITCSS method, popularized by Harry Roberts. It involves layering the global stylesheet into
+  and "inverted triangle", with more generic, far-reaching styles at the top, and more explicit, narrowly focused styles toward the bottom.
+  (See: https://www.creativebloq.com/web-design/manage-large-css-projects-itcss-101517528)
+*/
+
+//** Settings
+@use './styles/1-settings/settings';
+//** Tools
+@use './styles/2-tools/tools';
+//** Generic
+@use './styles/3-generic/generic';
+//** Elements
+@use './styles/4-elements/elements';
+//** Objects
+@use './styles/5-objects/objects';
+//** Components
+@use './styles/6-components/components';
+//** Utilities
+@use './styles/7-utilities/utilities';
+
+//** Shame: For styles whose authors we have forgiven, but for whose CSS sins we have yet to atone collectively. (Tech debt).
+// (https://media.giphy.com/media/m6tmCnGCNvTby/200_d.gif)
+@use './styles/8-shame/shame';

@@ -1,0 +1,8 @@
+/*
+  We COULD place vendor imports in the angular.json styles array, but that would prevent us from placing them within the appropriate layer
+  within our ITCSS setup. Plus, we might want to tweak the resets in our own ways, and it's best for understanding the stylesheet as a whole
+  to have that reset-like styles together in one place.
+*/
+@use '~normalize-scss/sass/normalize';
+
+@include normalize.normalize();
