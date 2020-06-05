@@ -1,5 +1,5 @@
 <!-- Controls -->
-<form [formGroup]="fg" class="playback-controls mb-10">
+<form [formGroup]="fg" class="playback-controls mb-30">
   <!-- Play/Pause -->
   <button
     (click)="togglePlayback()"
@@ -57,15 +57,33 @@
 <!-- Step Header -->
 
 <!-- Instrument Tracks -->
-<table>
+<table class="instrument-table">
   <thead>
     <tr>
+      <th scope="col">Instrument</th>
       <th *ngFor="let num of beats" scope="col">{{ num }}</th>
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <th scope="row"></th>
+    <!-- TODO: Separate into a new component with a directive selector to prevent a wrapper element inside the table. -->
+    <tr *ngFor="let instr of instruments">
+      <th scope="row" class="text-right pr-10">
+        {{ instr | camelSplit | titlecase }}
+      </th>
+      <td
+        *ngFor="
+          let beat of (sequence?.instruments)[instr].beats;
+          let index = index
+        "
+      >
+        <button
+          (click)="toggleBeat(instr, index)"
+          [class.has-beat]="beat"
+          aria-label="toggle beat"
+          class="beat-toggle active"
+          role="switch"
+        ></button>
+      </td>
     </tr>
   </tbody>
 </table>

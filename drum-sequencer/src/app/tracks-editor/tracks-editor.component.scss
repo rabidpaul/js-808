@@ -1,3 +1,5 @@
+@use '1-settings/colors.settings' as colors;
+
 .playback-controls {
   align-items: center;
   display: flex;
@@ -7,4 +9,49 @@
 .fixed-label {
   text-align: right;
   width: 70px;
+}
+
+.instrument-table {
+  $main-padding: 60px;
+  $beat-columns-width-pct: 70;
+  $name-column-width-pct: 100 - $beat-columns-width-pct;
+
+  border-collapse: collapse;
+  table-layout: fixed;
+  text-align: center;
+  width: 100%;
+
+  tbody {
+    td,
+    th {
+      border: 1px solid colors.$border;
+    }
+
+    tr > * {
+      &:first-child {
+        height: #{$name-column-width-pct}px;
+      }
+      &:not(:first-child) {
+        height: calc(#{$beat-columns-width-pct}vw / 16);
+      }
+    }
+  }
+}
+
+.beat-toggle {
+  background-color: colors.$white-smoke;
+  border: none;
+  cursor: pointer;
+  height: 100%;
+  opacity: 0.3;
+  width: 100%;
+
+  &:hover {
+    opacity: 0.7;
+  }
+
+  &.has-beat {
+    background-color: colors.$primary;
+    opacity: 0.6;
+  }
 }
