@@ -3,6 +3,7 @@
   <!-- Play/Pause -->
   <button
     (click)="togglePlayback()"
+    [class.is-active]="isPlaying"
     aria-label="Play/Pause"
     class="icon-button mr-10"
   >

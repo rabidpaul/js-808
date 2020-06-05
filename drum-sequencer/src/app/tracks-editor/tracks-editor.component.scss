@@ -4,6 +4,10 @@
   align-items: center;
   display: flex;
   justify-content: flex-end;
+
+  .icon-button.is-active {
+    color: colors.$primary;
+  }
 }
 
 .fixed-label {
