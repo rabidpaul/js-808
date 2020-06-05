@@ -35,6 +35,11 @@
       border: 1px solid colors.$border;
     }
 
+    th {
+      background-color: colors.$white;
+      color: colors.$border;
+    }
+
     tr > * {
       height: calc(#{$beat-columns-width-pct}vw / 16);
 

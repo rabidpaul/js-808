@@ -1,14 +1,16 @@
 export interface IBeatSequence {
   name: string; // We'll use name as a unique identifier, but if there were a lot, an id would be better.
-  instruments: {
-    [name: string]: IInstrument;
-  };
+  instruments: IInstruments;
 }
 
 export interface IInstrument {
   name: string;
   type: InstrumentType;
   beats: boolean[];
+}
+
+export interface IInstruments {
+  [name: string]: IInstrument;
 }
 
 // TODO: Replace basic oscillators with custom drum synth classes.

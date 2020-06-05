@@ -166,3 +166,29 @@ export const DRUM_SEQUENCES: IBeatSequence[] = [
     },
   },
 ];
+
+export const EMPTY_SEQUENCE: IBeatSequence = {
+  name: 'Custom',
+  instruments: {
+    kick: {
+      name: 'kick',
+      type: InstrumentType.KICK,
+      beats: createEmptySequence(),
+    },
+    snare: {
+      name: 'snare',
+      type: InstrumentType.SNARE,
+      beats: createEmptySequence(),
+    },
+    openHat: {
+      name: 'openHat',
+      type: InstrumentType.OPEN_HAT,
+      beats: createEmptySequence(),
+    },
+    closedHat: {
+      name: 'closedHat',
+      type: InstrumentType.CLOSED_HAT,
+      beats: createEmptySequence(),
+    },
+  },
+};
