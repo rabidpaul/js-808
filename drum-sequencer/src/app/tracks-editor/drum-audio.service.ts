@@ -1,7 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Tone } from 'tone';
-import { IBeatSequence, IInstrument } from './tracks-editor.interface';
+import { Gain, Synth, Transport } from 'tone';
+import { IInstrument } from './tracks-editor.interface';
 
+/**
+ * DrumAudioService
+ * This service manages the creation and manipulation of various audio sources with Tone.js. We create audio graphs, connected to audio
+ * output. Instruments can then be attached to the graph and and beats from their sequences can be played according to the audio context's
+ * timing.
+ */
 @Injectable({
   providedIn: 'root',
 })
@@ -25,9 +31,9 @@ export class DrumAudioService {
   createNewAudioGraph(onStep: () => any, subdivision = '4n'): void {
     this.onStep = onStep;
     this.subdivision = subdivision;
-    this.gain = new Tone.Gain(0.6);
+    this.gain = new Gain(0.6);
     this.gain.toMaster();
-    Tone.Transport(this.playStep, subdivision);
+    Transport.scheduleRepeat(this.playStep, subdivision);
   }
 
   /**
@@ -35,7 +41,7 @@ export class DrumAudioService {
    * @param instrument to be connected to the current audio graph
    */
   connectInstrument(instrument: IInstrument): void {
-    const synth = new Tone.Synth();
+    const synth = new Synth();
     synth.oscillator.type = instrument.type;
     this.instruments.push(synth);
     synth.connect(this.gain);
@@ -45,7 +51,7 @@ export class DrumAudioService {
    * Updates the current step, looping back to 0 when we reach the end of the sequence. On each step, we check each instrument, and play
    * a note from it's synth if it has a beat this step.
    */
-  playStep = (time: any) => {
+  playStep = (time: any): void => {
     this.currentStep = this.currentStep % 16;
     this.instruments.forEach(({ synth, instrument }) => {
       if (instrument.beats[this.currentStep]) {
@@ -58,7 +64,7 @@ export class DrumAudioService {
    * Stops the current audio sequence.
    */
   stopSequenceRepeat(): void {
-    Tone.Transport.stop();
+    Transport.stop();
   }
 
   /**
@@ -67,6 +73,6 @@ export class DrumAudioService {
    */
   updateBpm(bpm: number): void {
     this.bpm = bpm;
-    Tone.Transport.bpm.value = bpm;
+    Transport.bpm.value = bpm;
   }
 }

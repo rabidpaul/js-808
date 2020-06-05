@@ -17,13 +17,17 @@
 
 .instrument-table {
   $main-padding: 60px;
-  $beat-columns-width-pct: 70;
+  $beat-columns-width-pct: 90;
   $name-column-width-pct: 100 - $beat-columns-width-pct;
 
   border-collapse: collapse;
   table-layout: fixed;
   text-align: center;
   width: 100%;
+
+  thead > tr th:first-child {
+    width: #{$name-column-width-pct}vw;
+  }
 
   tbody {
     td,
@@ -32,11 +36,10 @@
     }
 
     tr > * {
-      &:first-child {
-        height: #{$name-column-width-pct}px;
-      }
+      height: calc(#{$beat-columns-width-pct}vw / 16);
+
       &:not(:first-child) {
-        height: calc(#{$beat-columns-width-pct}vw / 16);
+        width: calc(#{$beat-columns-width-pct}vw / 16);
       }
     }
   }

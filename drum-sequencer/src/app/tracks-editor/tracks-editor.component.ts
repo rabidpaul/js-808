@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DRUM_SEQUENCES } from './drum-sequences.constant';
 import { createEmptySequence } from '../utils/beats.utils';
-import { IBeatSequence } from './tracks-editor.interface';
+import { IBeatSequence, InstrumentType } from './tracks-editor.interface';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { DrumAudioService } from './drum-audio.service';
 
 @Component({
   selector: 'ds-tracks-editor',
@@ -22,10 +23,11 @@ export class TracksEditorComponent implements OnInit {
 
   private destroy$ = new Subject<undefined>();
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private drumService: DrumAudioService, private fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.fg = this.initForm();
+    this.initTrackSequence();
   }
 
   initForm(): FormGroup {
@@ -39,17 +41,35 @@ export class TracksEditorComponent implements OnInit {
     return form;
   }
 
+  initTrackSequence(): void {
+    this.drumService.createNewAudioGraph(this.onBeatTrigger);
+    this.updateBpm(this.bpm);
+    Object.entries(this.sequence.instruments).forEach(([name, instr]) => {
+      this.drumService.connectInstrument(instr);
+    });
+  }
+
+  onBeatTrigger = () => {};
+
+  /**
+   * Convert a BPM-value string into an integer and update the current sequence in the drum audio service.
+   * @param bpm beats per minute
+   */
+  updateBpm(bpm: string): void {
+    this.bpm = bpm;
+    this.drumService.updateBpm(parseInt(bpm, 10));
+  }
+
   onControlChanges = ({ sequence, bpm }): void => {
     // Update sequence and instruments if changed
     if (sequence.name !== this.sequence.name) {
-      this.sequence = this.sequences.find(({ name }) => name === sequence);
+      this.sequence = this.sequences.find(({ name }) => name === sequence.name);
       this.instruments = Object.keys(sequence.instruments);
     }
     // Update beats-per-minute if changed
     if (bpm !== this.bpm) {
-      this.bpm = bpm;
+      this.updateBpm(bpm);
     }
-    console.log('control change: ', sequence.name, bpm);
   };
 
   /**

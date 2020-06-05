@@ -68,7 +68,7 @@
   <tbody>
     <!-- TODO: Separate into a new component with a directive selector to prevent a wrapper element inside the table. -->
     <tr *ngFor="let instr of instruments">
-      <th scope="row" class="text-right pr-10">
+      <th scope="row" class="text-center pr-10">
         {{ instr | camelSplit | titlecase }}
       </th>
       <td
