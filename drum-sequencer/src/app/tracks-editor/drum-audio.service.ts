@@ -28,7 +28,7 @@ export class DrumAudioService {
    * @param onStep callback function
    * @param subdivision notes within a measure
    */
-  createNewAudioGraph(onStep: () => any, subdivision = '4n'): void {
+  createNewAudioGraph(onStep: () => any, subdivision = '8n'): void {
     this.onStep = onStep;
     this.subdivision = subdivision;
     this.gain = new Gain(0.6);
@@ -43,8 +43,16 @@ export class DrumAudioService {
   connectInstrument(instrument: IInstrument): void {
     const synth = new Synth();
     synth.oscillator.type = instrument.type;
-    this.instruments.push(synth);
+    this.instruments.push({ synth, instrument });
     synth.connect(this.gain);
+  }
+
+  clearInstruments(): void {
+    this.instruments.forEach(({ synth }) => {
+      synth.disconnect();
+      synth.dispose();
+      this.instruments = [];
+    });
   }
 
   /**
@@ -58,7 +66,15 @@ export class DrumAudioService {
         synth.triggerAttackRelease('C4', this.subdivision, time);
       }
     });
+    this.currentStep += 1;
   };
+
+  /**
+   * Starts the current audio sequence playback
+   */
+  startSequenceRepeat() {
+    Transport.start();
+  }
 
   /**
    * Stops the current audio sequence.
