@@ -2,7 +2,7 @@ import {
   repeatToFillSequence,
   createEmptySequence,
 } from '../utils/beats.utils';
-import { IBeatSequence } from './tracks-editor.interface';
+import { IBeatSequence, InstrumentType } from './tracks-editor.interface';
 
 export const DRUM_SEQUENCES: IBeatSequence[] = [
   {
@@ -10,11 +10,24 @@ export const DRUM_SEQUENCES: IBeatSequence[] = [
     instruments: {
       kick: {
         name: 'kick',
+        type: InstrumentType.KICK,
         beats: repeatToFillSequence([true, false, false, false]),
       },
-      snare: { name: 'snare', beats: createEmptySequence() },
-      openHat: { name: 'openHat', beats: createEmptySequence() },
-      closedHat: { name: 'closedHat', beats: createEmptySequence() },
+      snare: {
+        name: 'snare',
+        type: InstrumentType.SNARE,
+        beats: createEmptySequence(),
+      },
+      openHat: {
+        name: 'openHat',
+        type: InstrumentType.OPEN_HAT,
+        beats: createEmptySequence(),
+      },
+      closedHat: {
+        name: 'closedHat',
+        type: InstrumentType.CLOSED_HAT,
+        beats: createEmptySequence(),
+      },
     },
   },
   {
@@ -22,6 +35,7 @@ export const DRUM_SEQUENCES: IBeatSequence[] = [
     instruments: {
       kick: {
         name: 'kick',
+        type: InstrumentType.KICK,
         beats: repeatToFillSequence([
           true,
           false,
@@ -43,14 +57,17 @@ export const DRUM_SEQUENCES: IBeatSequence[] = [
       },
       snare: {
         name: 'snare',
+        type: InstrumentType.SNARE,
         beats: repeatToFillSequence([false, false, false, false, true]),
       },
       openHat: {
         name: 'openHat',
+        type: InstrumentType.OPEN_HAT,
         beats: repeatToFillSequence([true, false]),
       },
       closedHat: {
         name: 'closedHat',
+        type: InstrumentType.CLOSED_HAT,
         beats: createEmptySequence(),
       },
     },
@@ -60,6 +77,7 @@ export const DRUM_SEQUENCES: IBeatSequence[] = [
     instruments: {
       kick: {
         name: 'kick',
+        type: InstrumentType.KICK,
         beats: [
           true,
           false,
@@ -81,6 +99,7 @@ export const DRUM_SEQUENCES: IBeatSequence[] = [
       },
       snare: {
         name: 'snare',
+        type: InstrumentType.SNARE,
         beats: [
           true,
           false,
@@ -102,6 +121,7 @@ export const DRUM_SEQUENCES: IBeatSequence[] = [
       },
       openHat: {
         name: 'openHat',
+        type: InstrumentType.OPEN_HAT,
         beats: [
           false,
           false,
@@ -123,6 +143,7 @@ export const DRUM_SEQUENCES: IBeatSequence[] = [
       },
       closedHat: {
         name: 'closedHat',
+        type: InstrumentType.CLOSED_HAT,
         beats: [
           true,
           false,
