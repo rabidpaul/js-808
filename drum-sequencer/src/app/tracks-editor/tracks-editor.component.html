@@ -65,7 +65,7 @@
       <th *ngFor="let num of beats" scope="col">{{ num }}</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody [class.is-playing]="isPlaying">
     <!-- TODO: Separate into a new component with a directive selector to prevent a wrapper element inside the table. -->
     <tr *ngFor="let instr of instruments">
       <th scope="row" class="text-center pr-10">
@@ -76,6 +76,7 @@
           let beat of (sequence?.instruments)[instr].beats;
           let index = index
         "
+        [class.beat-playing]="(stepIndex$ | async) === index"
       >
         <button
           (click)="toggleBeat(instr, index)"

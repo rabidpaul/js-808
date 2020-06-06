@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Gain, Synth, Transport } from 'tone';
-import { IInstrument } from './tracks-editor.interface';
+import { Gain, Sequence, Synth, Transport } from 'tone';
+import {
+  IInstrument,
+  IBeatSequence,
+  IInstruments,
+  InstrumentType,
+} from './tracks-editor.interface';
 
 /**
  * DrumAudioService
@@ -12,83 +17,85 @@ import { IInstrument } from './tracks-editor.interface';
   providedIn: 'root',
 })
 export class DrumAudioService {
-  bpm = 120;
-  currentStep = 0;
-  gain: any;
-  instruments: { synth: any; instrument: IInstrument }[] = [];
-  subdivision: string;
-
-  onStep: () => any;
+  gain = new Gain(0.6).toMaster();
+  instruments: IInstruments;
+  onStep: (step: number, time: any) => any;
+  scheduledCallbackId: any;
+  stepIndex = 0;
+  synthsByInstrument = new Map<string, any>();
 
   constructor() {}
 
   /**
-   * Sets the callback for each step in the sequence, creates a gain to control volume, connects it to master, and then
-   * sets up the Transport to trigger playStep() on each note.
-   * @param onStep callback function
-   * @param subdivision notes within a measure
+   * Schedules a repeated event on the Transport timeline, disposing of previous audio source nodes, and mapping new sources based on the
+   * sequence's instruments passed in. The supplied callback will be invoked each time the event fires, which is every quarter note.
+   * @param param0 beat sequence
+   * @param callback invoked on each scheduled quarter note
    */
-  createNewAudioGraph(onStep: () => any, subdivision = '8n'): void {
-    this.onStep = onStep;
-    this.subdivision = subdivision;
-    this.gain = new Gain(0.6);
-    this.gain.toMaster();
-    Transport.scheduleRepeat(this.playStep, subdivision);
+  scheduleAudioLoopFromSequence(
+    { instruments }: IBeatSequence,
+    callback: (step: number, time: any) => any
+  ): void {
+    if (this.scheduledCallbackId !== undefined) {
+      this.disposePreviousSources();
+    }
+    this.synthsByInstrument = this.mapSynthsByInstrument(instruments);
+    this.instruments = instruments;
+    this.onStep = callback;
+    this.scheduledCallbackId = Transport.scheduleRepeat(
+      this.playBeats,
+      '4n',
+      0
+    );
   }
 
   /**
-   * Adds a new syth of the given IInstrument's type and connects it to the audio graph.
-   * @param instrument to be connected to the current audio graph
+   * Clears the transport of the recurring event previously created, and disposes of each node representing our instrument audio sources.
+   * then clears the synth map.
    */
-  connectInstrument(instrument: IInstrument): void {
-    const synth = new Synth();
-    synth.oscillator.type = instrument.type;
-    this.instruments.push({ synth, instrument });
-    synth.connect(this.gain);
-  }
-
-  clearInstruments(): void {
-    this.instruments.forEach(({ synth }) => {
-      synth.disconnect();
+  disposePreviousSources(): void {
+    Transport.clear(this.scheduledCallbackId);
+    this.synthsByInstrument.forEach((synth, key) => {
       synth.dispose();
-      this.instruments = [];
     });
+    this.synthsByInstrument.clear();
   }
 
   /**
-   * Updates the current step, looping back to 0 when we reach the end of the sequence. On each step, we check each instrument, and play
-   * a note from it's synth if it has a beat this step.
+   * Creates a Synth object for each instrument, setting it's oscillator to the specified type, connecting it to the gain, and adding it to
+   * the map.
+   * @param instruments for which to create and map synth sources
    */
-  playStep = (time: any): void => {
-    this.currentStep = this.currentStep % 16;
-    this.instruments.forEach(({ synth, instrument }) => {
-      if (instrument.beats[this.currentStep]) {
-        synth.triggerAttackRelease('C4', this.subdivision, time);
+  mapSynthsByInstrument(instruments: IInstruments): Map<string, any> {
+    return Object.values(instruments).reduce((map, { type, name }) => {
+      const synth = new Synth();
+      synth.oscillator.type = type;
+      synth.volume.value = 1;
+      synth.connect(this.gain);
+      return map.set(name, synth.connect(this.gain));
+    }, new Map<string, any>());
+  }
+
+  playBeats = (time: any) => {
+    Object.entries(this.instruments).forEach(([k, { name, beats }]) => {
+      if (beats[this.stepIndex]) {
+        const synth = this.synthsByInstrument.get(name);
+        synth.triggerAttackRelease('C4', '4n', time);
       }
     });
-    this.currentStep += 1;
+    this.onStep(this.stepIndex, time);
+    this.stepIndex = (this.stepIndex + 1) % 16;
   };
 
-  /**
-   * Starts the current audio sequence playback
-   */
-  startSequenceRepeat() {
+  updateBpm(bpm: number): void {
+    Transport.bpm.value = bpm;
+  }
+
+  startAudio(): void {
     Transport.start();
   }
 
-  /**
-   * Stops the current audio sequence.
-   */
-  stopSequenceRepeat(): void {
+  stopAudio(): void {
     Transport.stop();
-  }
-
-  /**
-   * Updates the current beats per minute of the audio graph playback.
-   * @param bpm beats per minute
-   */
-  updateBpm(bpm: number): void {
-    this.bpm = bpm;
-    Transport.bpm.value = bpm;
   }
 }

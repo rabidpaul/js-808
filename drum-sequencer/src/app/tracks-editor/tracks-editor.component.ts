@@ -1,22 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DRUM_SEQUENCES, EMPTY_SEQUENCE } from './drum-sequences.constant';
-import {
-  createEmptySequence,
-  createEmptyInstruments,
-  cloneInstruments,
-} from '../utils/beats.utils';
-import { IBeatSequence, InstrumentType } from './tracks-editor.interface';
-import { Subject } from 'rxjs';
+import { createEmptySequence, cloneInstruments } from '../utils/beats.utils';
+import { IBeatSequence } from './tracks-editor.interface';
+import { Subject, BehaviorSubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DrumAudioService } from './drum-audio.service';
 
+/**
+ * TracksEditorComponent
+ * Controls for play/pause, stop, and BPM-adjustment affect the communication with the DrumAudioService to control playback. The editor
+ * contains the table of toggleable buttons for manipulating beats for the custom sequence.
+ * TODO: Create less coupling between this component and the DrumAudioService. Move as much audio api management into the service.
+ */
 @Component({
   selector: 'ds-tracks-editor',
   templateUrl: './tracks-editor.component.html',
   styleUrls: ['./tracks-editor.component.scss'],
 })
 export class TracksEditorComponent implements OnInit {
+  stepIndex$ = new BehaviorSubject<number>(0);
   isPlaying = false;
   fg: FormGroup;
   bpm = '120'; // TODO: Move BPM into the sequence itself so it's custom to each pattern.
@@ -27,11 +30,16 @@ export class TracksEditorComponent implements OnInit {
 
   private destroy$ = new Subject<undefined>();
 
-  constructor(private drumService: DrumAudioService, private fb: FormBuilder) {}
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private drumService: DrumAudioService,
+    private fb: FormBuilder
+  ) {}
 
   ngOnInit(): void {
     this.fg = this.initForm();
-    this.initTrackSequence();
+    this.changeToSequence(this.sequence);
+    this.updateBpm(this.bpm);
   }
 
   /**
@@ -48,21 +56,18 @@ export class TracksEditorComponent implements OnInit {
     return form;
   }
 
-  initTrackSequence(): void {
-    this.drumService.createNewAudioGraph(this.onBeatTrigger);
-    this.updateBpm(this.bpm);
-    Object.entries(this.sequence.instruments).forEach(([name, instr]) => {
-      this.drumService.connectInstrument(instr);
-    });
-  }
-
-  onBeatTrigger = () => {};
+  onBeatTrigger = (step: number): void => {
+    this.stepIndex$.next(step);
+    this.cdr.detectChanges();
+  };
 
   changeToSequence(sequence: IBeatSequence): void {
-    this.drumService.clearInstruments();
     this.sequence = this.sequences.find(({ name }) => name === sequence.name);
     this.instruments = Object.keys(sequence.instruments);
-    this.initTrackSequence();
+    this.drumService.scheduleAudioLoopFromSequence(
+      sequence,
+      this.onBeatTrigger
+    );
   }
 
   /**
@@ -94,15 +99,15 @@ export class TracksEditorComponent implements OnInit {
     return one.name === two.name;
   }
 
-  togglePlayback(start?: boolean): void {
-    if (start !== undefined) {
-      this.isPlaying = start;
+  togglePlayback(state?: boolean): void {
+    if (state !== undefined) {
+      this.isPlaying = state;
     } else {
       this.isPlaying = !this.isPlaying;
     }
     this.isPlaying
-      ? this.drumService.startSequenceRepeat()
-      : this.drumService.stopSequenceRepeat();
+      ? this.drumService.startAudio()
+      : this.drumService.stopAudio();
   }
 
   /**
@@ -121,12 +126,13 @@ export class TracksEditorComponent implements OnInit {
           ...customSeq,
           instruments: cloneInstruments(this.sequence.instruments),
         };
-        this.changeToSequence(customSeq);
         this.fg.patchValue({ sequence: customSeq });
+        this.fg.updateValueAndValidity();
       }
       const beats = this.sequence.instruments[instr].beats;
       const beat = beats[index];
       beats[index] = !beat;
+      this.changeToSequence(this.sequence);
     }
   }
 }

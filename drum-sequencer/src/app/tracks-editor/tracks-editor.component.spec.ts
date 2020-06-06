@@ -41,13 +41,18 @@ describe('TracksEditorComponent', () => {
   });
 
   describe('ngOnInit', () => {
-    it('should call initForm() and initTrackSequence()', () => {
-      spyOn(component, 'initForm');
-      spyOn(component, 'initTrackSequence');
-      component.ngOnInit();
-      expect(component.initForm).toHaveBeenCalled();
-      expect(component.initTrackSequence).toHaveBeenCalled();
-    });
+    it('should call initForm(), changeToSequence(), updateBpm', inject(
+      [DrumAudioService],
+      (ds: DrumAudioService) => {
+        spyOn(component, 'initForm');
+        spyOn(component, 'changeToSequence');
+        spyOn(ds, 'updateBpm');
+        component.ngOnInit();
+        expect(component.initForm).toHaveBeenCalled();
+        expect(component.changeToSequence).toHaveBeenCalled();
+        expect(ds.updateBpm).toHaveBeenCalled();
+      }
+    ));
   });
 
   describe('initForm', () => {
@@ -61,20 +66,28 @@ describe('TracksEditorComponent', () => {
     });
   });
 
-  describe('initTrackSequence', () => {
+  describe('onBeatTrigger', () => {
+    it('should next() stepIndex$', () => {
+      const step = 6;
+      spyOn(component.stepIndex$, 'next');
+      component.onBeatTrigger(step);
+      expect(component.stepIndex$.next).toHaveBeenCalledWith(step);
+    });
+  });
+
+  describe('changeToSequence', () => {
     it('should call create a new audio graph with bpm and instruments for the current sequence', inject(
       [DrumAudioService],
       (ds: DrumAudioService) => {
-        spyOn(ds, 'createNewAudioGraph');
-        spyOn(ds, 'connectInstrument');
-        spyOn(component, 'updateBpm');
-        component.initTrackSequence();
-        expect(ds.createNewAudioGraph).toHaveBeenCalledWith(
+        spyOn(ds, 'scheduleAudioLoopFromSequence');
+        const [sequence] = DRUM_SEQUENCES;
+        component.changeToSequence(sequence);
+        Object.keys(sequence.instruments).forEach((k) => {
+          expect(component.instruments).toContain(k);
+        });
+        expect(ds.scheduleAudioLoopFromSequence).toHaveBeenCalledWith(
+          sequence,
           component.onBeatTrigger
-        );
-        expect(component.updateBpm).toHaveBeenCalledWith(component.bpm);
-        expect(ds.connectInstrument).toHaveBeenCalledTimes(
-          Object.keys(component.sequence.instruments).length
         );
       }
     ));
@@ -127,6 +140,10 @@ describe('TracksEditorComponent', () => {
   });
 
   describe('toggleBeat', () => {
+    it('should update the sequenc select to Custom and copy the current sequence patterns', () => {
+      // TODO
+    });
+
     it('should set beat 3 on the sequence to true', () => {
       const index = 2;
       const instr = 'kick';

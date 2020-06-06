@@ -4,13 +4,17 @@ import { Injectable } from '@angular/core';
 export class DrumAudioServiceStub {
   constructor() {}
 
-  createNewAudioGraph(): void {}
+  scheduleAudioLoopFromSequence(): void {}
 
-  connectInstrument(): void {}
+  disposePreviousSources(): void {}
 
-  playStep(): void {}
+  mapSynthsByInstrument(): void {}
 
-  stopSequenceRepeat(): void {}
+  playBeats(): void {}
 
   updateBpm(): void {}
+
+  startAudio(): void {}
+
+  stopAudio(): void {}
 }

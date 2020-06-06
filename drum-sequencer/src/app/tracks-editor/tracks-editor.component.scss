@@ -35,9 +35,14 @@
       border: 1px solid colors.$border;
     }
 
+    &.is-playing .beat-playing {
+      border: 2px solid colors.$white-smoke;
+    }
+
     th {
       background-color: colors.$white;
       color: colors.$border;
+      border-width: 2px;
     }
 
     tr > * {
@@ -65,5 +70,9 @@
   &.has-beat {
     background-color: colors.$primary;
     opacity: 0.6;
+
+    .is-playing .beat-playing & {
+      opacity: 0.9;
+    }
   }
 }
