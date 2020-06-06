@@ -29,13 +29,13 @@ This drumkit does **NOT NEED TO PLAY SOUND.** Instead we want to see a real time
 
 Your drum machine should include the following features:
 
-- [ ] Play & stop controls.
-- [ ] The ability for the user to alter the tempo of the sequence. This tempo change can occur while the song is stopped or playing – whatever makes the most sense for your code structure.
-- [ ] Playback readout - there should be a visual indication of the active step while the sequence is playing. Ideally, the playback speed will also match the
+- [x] Play & stop controls.
+- [x] The ability for the user to alter the tempo of the sequence. This tempo change can occur while the song is stopped or playing – whatever makes the most sense for your code structure.
+- [x] Playback readout - there should be a visual indication of the active step while the sequence is playing. Ideally, the playback speed will also match the
       sequence tempo.
-- [ ] There should be 3 premade drum pattern sequences that can be loaded into your drumkit. The UI element is up to you; in the wireframe it is the dropdown.
-- [ ] The pattern is expected to be 8 steps or more. eg- if you look at that wireframe, there are 16 columns.
-- [ ] The time signature is expected to be 4/4 (if you don't know what that is, don't worry and ignore this instruction).
+- [x] There should be 3 premade drum pattern sequences that can be loaded into your drumkit. The UI element is up to you; in the wireframe it is the dropdown.
+- [x] The pattern is expected to be 8 steps or more. eg- if you look at that wireframe, there are 16 columns.
+- [x] The time signature is expected to be 4/4 (if you don't know what that is, don't worry and ignore this instruction).
 
 ### Useful Timing Info
 
@@ -47,7 +47,7 @@ In other words, a 8 step pattern would take `(60/BPM)*4` seconds to play and eac
 
 If you have done all the required features and want to keep going because you just made a cool drumkit, try doing the following:
 
-- Output sound - you might want to look at some higher-level libraries that allow you to load and play sounds rather than getting mired in the details of managing and playing the sounds directly (though you're certainly welcome to do that too).
+- [x] Output sound - you might want to look at some higher-level libraries that allow you to load and play sounds rather than getting mired in the details of managing and playing the sounds directly (though you're certainly welcome to do that too).
 - Try mix and matching patterns of different durations (8, 16, 32 steps),
   note that if you have 2 patterns, one 8 and one 16, the 8 should play
   twice while the 16 plays once.
